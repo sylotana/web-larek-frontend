@@ -13,7 +13,7 @@ export class Success extends Component<ISuccess> {
   protected _close: HTMLButtonElement;
   protected _total: HTMLParagraphElement;
 
-  constructor(container: HTMLElement, actions: ISuccessActions, total: number) {
+  constructor(protected container: HTMLElement, actions: ISuccessActions, total: number) {
     super(container);
 
     this._close = ensureElement<HTMLButtonElement>('.order-success__close', this.container);

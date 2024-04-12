@@ -14,7 +14,7 @@ export class Basket extends Component<IBasket> {
   protected _total: HTMLSpanElement;
   protected _button: HTMLButtonElement;
 
-  constructor(container: HTMLElement, protected events: EventEmitter) {
+  constructor(protected container: HTMLElement, protected events: EventEmitter) {
     super(container);
 
     this._list = ensureElement<HTMLUListElement>('.basket__list', this.container);
