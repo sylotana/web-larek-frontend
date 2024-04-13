@@ -6,6 +6,7 @@ import { cloneTemplate, ensureElement, createElement } from './utils/utils';
 import {
   FieldsInput,
   IContactsForm,
+  IProduct,
   IOrderForm,
   PaymentMethods,
 } from './types';
@@ -19,7 +20,6 @@ import { Success } from './components/Success';
 import {
   AppState,
   CatalogChangeEvent,
-  Product,
 } from './components/AppData';
 import { Card } from './components/Card';
 import { Order } from './components/Order';
@@ -177,11 +177,11 @@ events.on('orderContacts:open', () => {
   });
 });
 
-events.on('card:select', (item: Product) => {
+events.on('card:select', (item: IProduct) => {
   appData.setPreview(item);
 });
-events.on('preview:changed', (item: Product) => {
-  const showItem = (item: Product) => {
+events.on('preview:changed', (item: IProduct) => {
+  const showItem = (item: IProduct) => {
     const existingItem = appData.basket.find(
       (product) => item.id === product.id
     );

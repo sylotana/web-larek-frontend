@@ -1,7 +1,7 @@
 import { Component } from './base/Component';
 import { createElement, ensureElement } from '../utils/utils';
 import { EventEmitter } from './base/events';
-import { Product } from './AppData';
+import { IProduct } from '../types'
 
 interface IBasket {
   items: HTMLElement[];
@@ -47,7 +47,7 @@ export class Basket extends Component<IBasket> {
     }
   }
 
-  set selected(items: Product[]) {
+  set selected(items: IProduct[]) {
     if (items.length) {
       this.setDisabled(this._button, false);
     } else {

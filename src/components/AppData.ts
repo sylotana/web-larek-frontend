@@ -12,24 +12,9 @@ export type CatalogChangeEvent = {
   catalog: IProduct[];
 };
 
-export class Product extends Model<IProduct> {
-  id: string;
-  title: string;
-  description?: string;
-  image: string;
-  price: number | null;
-  category: string;
-  status: boolean;
-
-  placeBasket(price: number, title: string) {
-    this.price = price;
-    this.title = title;
-  }
-}
-
 export class AppState extends Model<IAppState> {
-  basket: Product[] = [];
-  catalog: Product[];
+  basket: IProduct[] = [];
+  catalog: IProduct[];
   loading: boolean;
   order: IOrder = {
     phone: '',
@@ -48,7 +33,7 @@ export class AppState extends Model<IAppState> {
   }
 
   setCatalog(items: IProduct[]) {
-    this.catalog = items.map((item) => new Product(item, this.events));
+    this.catalog = items.map((item) => item);
     this.emitChanges('items:changed', { catalog: this.catalog });
   }
 
@@ -107,7 +92,7 @@ export class AppState extends Model<IAppState> {
     return Object.keys(errors).length === 0;
   }
 
-  addToBasket(product: Product) {
+  addToBasket(product: IProduct) {
     const existingItem = this.basket.find((item) => item.id === product.id);
     if (existingItem) {
       this.events.emit('basket:open');
