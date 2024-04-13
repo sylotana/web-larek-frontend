@@ -147,9 +147,7 @@ export type FormErrors = Partial<Record<keyof IOrder, string>>;
 1. `protected events: IEvents` — события
 
 Класс имеет такие методы:
-- `emitChanges(event: string, payload?: object)` — сообщить всем, что модель поменялась. Принимает следущие параметры:
-  1. `event: string` — отслеживаемое событие
-  2. `payload?: object` — используемый объект
+- `emitChanges(event: string, payload?: object)` — сообщить всем, что модель поменялась. Принимает следущие параметры: `event: string` — отслеживаемое событие; `payload?: object` — используемый объект
 ---
 
 ### Класс AppState
@@ -158,18 +156,14 @@ export type FormErrors = Partial<Record<keyof IOrder, string>>;
 Класс имеет такие методы:
 - `getTotal(): number` — возвращает общую стоимость товаров в корзине
 - `setCatalog(items: IProduct[])` — установить каталог товаров
-В качестве параметра `items` принимает список товаров
-- `setPreview(item: IProduct)` — устанавливает превью для товара. Принимает параметр `item` — объект продукта
+В качестве параметра `items: IProduct[]` принимает список товаров
+- `setPreview(item: IProduct)` — устанавливает превью для товара. Принимает параметр `item:  IProduct` — объект продукта
 - `getProduct(): IProduct[]` — возвращает список товаров
-- `setOrderField(field: keyof IOrderForm, value: string)` — установить поля формы заказа. Принимает следующие параметры:
-  1. `field: keyof IOrderForm` — поле формы заказа
-  2. `value: string` — значение поля
-- ` setContactsField(field: keyof IContactsForm, value: string)` — установить поля формы контактов. Принимает следующием параметры:
-  1. `field: keyof IContactsForm` — поле контактной информации
-  2. `value: string` — значение поля
+- `setOrderField(field: keyof IOrderForm, value: string)` — установить поля формы заказа. Принимает следующие параметры: `field: keyof IOrderForm` — поле формы заказа; `value: string` — значение поля
+- ` setContactsField(field: keyof IContactsForm, value: string)` — установить поля формы контактов. Принимает следующием параметры: `field: keyof IContactsForm` — поле контактной информации; `value: string` — значение поля
 - `validateOrder()` — валидация формы заказа
 - `validateContacts()` — валидация формы контактных данных
-- `addToBasket(product: IProduct)` — добавление в корзину. Принимает параметр `product` — товар, добавляемый в корзину
+- `addToBasket(product: IProduct)` — добавление в корзину. Принимает параметр `product: IProduct` — товар, добавляемый в корзину
 ---
 
 ## Слой коммуникации
