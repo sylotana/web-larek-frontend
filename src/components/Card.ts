@@ -68,10 +68,6 @@ export class Card extends Component<ICard> {
     this.setImage(this._image, value, this.title);
   }
 
-  get price(): string {
-    return this._price.textContent;
-  }
-
   set price(value: string) {
     if (value === null) {
       this.setText(this._price, 'Бесценно');
@@ -79,6 +75,10 @@ export class Card extends Component<ICard> {
     } else {
       this.setText(this._price, `${value} синапсов`);
     }
+  }
+
+  get price(): string {
+    return this._price.textContent;
   }
 
   set category(value: string) {

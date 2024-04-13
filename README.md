@@ -160,7 +160,7 @@ export type FormErrors = Partial<Record<keyof IOrder, string>>;
 - `setPreview(item: IProduct)` — устанавливает превью для товара. Принимает параметр `item:  IProduct` — объект продукта
 - `getProduct(): IProduct[]` — возвращает список товаров
 - `setOrderField(field: keyof IOrderForm, value: string)` — установить поля формы заказа. Принимает следующие параметры: `field: keyof IOrderForm` — поле формы заказа; `value: string` — значение поля
-- ` setContactsField(field: keyof IContactsForm, value: string)` — установить поля формы контактов. Принимает следующием параметры: `field: keyof IContactsForm` — поле контактной информации; `value: string` — значение поля
+- `setContactsField(field: keyof IContactsForm, value: string)` — установить поля формы контактов. Принимает следующием параметры: `field: keyof IContactsForm` — поле контактной информации; `value: string` — значение поля
 - `validateOrder()` — валидация формы заказа
 - `validateContacts()` — валидация формы контактных данных
 - `addToBasket(product: IProduct)` — добавление в корзину. Принимает параметр `product: IProduct` — товар, добавляемый в корзину
@@ -177,9 +177,9 @@ export type FormErrors = Partial<Record<keyof IOrder, string>>;
 1. `options?: RequestInit` — параметры запроса
 
 Класс имеет такие методы:
-- `getProductItem` — получить информацию об одном продукте
-- `getProductList` — получить список продуктов
-- `orderProducts` — оформить заказ
+- `getProductItem(id: string): Promise<IProduct>` — получить информацию об одном продукте. В качестве параметра принимает `id: string` — идентификатор продукта
+- `getProductList(): Promise<IProduct[]>` — получить список продуктов
+- `orderProducts(order: IOrderForm): Promise<IOrderResult>` — оформить заказ. Принимает параметр `order: IOrderForm` — форма заказа
 ---
 
 ## Слой представления
@@ -191,13 +191,13 @@ export type FormErrors = Partial<Record<keyof IOrder, string>>;
 1. `protected readonly container: HTMLElement` — DOM-элемент, в котором будет размещен компонент
 
 Класс имеет такие методы:
-- `toggleClass` — переключить класс
-- `setText` — установить текстовое содержимое
-- `setDisabled` — сменить статус блокировки
-- `setHidden` — скрыть элемент
-- `setVisible` — показать элемент
-- `setImage` — установить изображение с алтернативным текстом
-- `render` — вернуть корневой DOM-элемент
+- `toggleClass(element: HTMLElement, className: string, force?: boolean)` — переключить класс
+- `protected setText(element: HTMLElement, value: unknown)` — установить текстовое содержимое
+- `setDisabled(element: HTMLElement, state: boolean)` — сменить статус блокировки
+- `protected setHidden(element: HTMLElement)` — скрыть элемент
+- `protected setVisible(element: HTMLElement)` — показать элемент
+- `protected setImage(element: HTMLImageElement, src: string, alt?: string)` — установить изображение с алтернативным текстом
+- `render(data?: Partial<T>): HTMLElement` — вернуть корневой DOM-элемент
 ---
 
 ### Класс Basket
@@ -208,9 +208,9 @@ export type FormErrors = Partial<Record<keyof IOrder, string>>;
 1. `protected events: EventEmitter` — события
 
 Класс имеет такие методы:
-- `set items` — список товаров в корзине
-- `set selected` — блокирует кнопку оформления заказа, в зависимости от наличия товаров в корзине
-- `set total` — итоговая стоимость товаров
+- `set items(items: HTMLElement[])` — список товаров в корзине. В качестве параметра принимает `items: HTMLElement[]` — список DOM-элементов 
+- `set selected(items: IProduct[])` — блокирует кнопку оформления заказа, в зависимости от наличия товаров в корзине. Принимает параметр `items: IProduct[]` — список добавленных товаров в корзину
+- `set total(value: number)` — итоговая стоимость товаров. Параметр `total: number` — итоговая сумма заказа
 ---
 
 ### Класс Form
@@ -221,10 +221,10 @@ export type FormErrors = Partial<Record<keyof IOrder, string>>;
 1. `protected events: IEvents` — события
 
 Класс имеет такие методы:
-- `set valid` — состояние валидности формы
-- `set errors` — текст ошибки формы
-- `protected onInputChange` — событие изменения поля ввода
-- `render` — вернуть корневой DOM-элемент
+- `set valid(value: boolean)` — состояние валидности формы
+- `set errors(value: string)` — текст ошибки формы
+- `protected onInputChange(field: keyof T, value: string)` — событие изменения поля ввода
+- `render(state: Partial<T> & IFormState)` — вернуть корневой DOM-элемент
 ---
 
 ### Класс Modal
@@ -235,12 +235,12 @@ export type FormErrors = Partial<Record<keyof IOrder, string>>;
 1. `protected events: IEvents` — события
 
 Класс имеет такие методы:
-- `set content` — контент в модальном окне
-- `open` — открытие модального окна
-- `order` — событие открытия заказа
-- `orderContacts` — событие открытия контактов
-- `close` — закрытие модального окна
-- `render` — вернуть корневой DOM-элемент
+- `set content(value: HTMLElement)` — контент в модальном окне
+- `open()` — открытие модального окна
+- `order()` — событие открытия заказа
+- `orderContacts()` — событие открытия контактов
+- `close()` — закрытие модального окна
+- `render(data: IModalData): HTMLElement` — вернуть корневой DOM-элемент
 ---
 
 ### Класс Success
@@ -260,17 +260,17 @@ export type FormErrors = Partial<Record<keyof IOrder, string>>;
 1. `actions?: ICardActions` — события
 
 Класс имеет такие методы:
-- `set id` — установить id
-- `get id` — получить id или пустую строку
-- `set title` — установить название товара
-- `get title` — получить название товара
-- `set description` — установить описание
-- `set image` — установить картинку
-- `set price` — установить цену
-- `get price` — получить цену
-- `set category` — установить категорию
-- `get category` — получить категорию
-- `set inBasket` — текст для кнопки в зависимости от наличия в товара корзине
+- `set id(value: string)` — установить id
+- `get id(): string` — получить id или пустую строку
+- `set title(value: string)` — установить название товара
+- `get title(): string` — получить название товара
+- `set description(value: string | string[])` — установить описание
+- `set image(value: string)` — установить картинку
+- `set price(value: string)` — установить цену
+- `get price(): string` — получить цену
+- `set category(value: string)` — установить категорию
+- `get category(): string` — получить категорию
+- `set inBasket(value: boolean)` — текст для кнопки в зависимости от наличия в товара корзине
 ---
 
 ### Класс Order
@@ -281,10 +281,10 @@ export type FormErrors = Partial<Record<keyof IOrder, string>>;
 1. `events: IEvents` — события
 
 Класс имеет такие методы:
-- `set address` — установить адрес доставки
-- `set phone` — установить номер телефона
-- `set email` — установить электронную почту
-- `set selected` — установить способ оплаты
+- `set address(value: string)` — установить адрес доставки
+- `set phone(value: string)` — установить номер телефона
+- `set email(value: string)` — установить электронную почту
+- `set selected(name: string)` — установить способ оплаты
 ---
 
 ### Класс Page
@@ -295,6 +295,6 @@ export type FormErrors = Partial<Record<keyof IOrder, string>>;
 1. `events: IEvents` — события
 
 Класс имеет такие методы:
-- `set counter` — установить счетчик товаров в корзине
-- `set catalog` — вывести карточки товаров внутри каталога
-- `set locked` — заблокировать скролл (при открытии модальных окон)
+- `set counter(value: number)` — установить счетчик товаров в корзине
+- `set catalog(items: HTMLElement[])` — вывести карточки товаров внутри каталога
+- `set locked(value: boolean)` — заблокировать скролл (при открытии модальных окон)
